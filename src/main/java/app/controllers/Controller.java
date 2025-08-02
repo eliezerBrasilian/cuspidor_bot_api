@@ -50,11 +50,12 @@ public class Controller {
 
         @PostMapping("user/become-premium/{id}")
         public ResponseEntity<String> tooglePremium(
-                        @PathVariable("id") long userId) {
+                        @PathVariable("id") String idTelegram) {
 
-                Optional<UsuarioModel> opUser = userRepository.findById(userId);
+                Optional<UsuarioModel> opUser = userRepository.findByIdTelegram(idTelegram);
                 if (opUser.isEmpty())
                         return ResponseEntity.status(404).body("user doest't exists");
+
                 var user = opUser.get();
                 user.isPremium = true;
 
@@ -62,11 +63,11 @@ public class Controller {
                 return ResponseEntity.status(201).body("user now is premium");
         }
 
-        @GetMapping("user/is-premium/{id}")
+        @GetMapping("user/is-premium/{idTelegram}")
         public ResponseEntity<String> userIsPremium(
-                        @PathVariable("id") long userId) {
+                        @PathVariable("idTelegram") String idTelegram) {
 
-                Optional<UsuarioModel> opUser = userRepository.findById(userId);
+                Optional<UsuarioModel> opUser = userRepository.findByIdTelegram(idTelegram);
                 if (opUser.isEmpty())
                         return ResponseEntity.status(404).body("user doest't exists");
 

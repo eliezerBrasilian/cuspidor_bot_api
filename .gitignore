@@ -36,6 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 src/main/resources/application.yml
+src/main/resources/application (antigo-funcionava).yml
 src/main/resources/queries/criando_banco.txt
 src/main/resources/queries/data-1753713506291.csv
 src/main/resources/queries/*.csv
+.env
