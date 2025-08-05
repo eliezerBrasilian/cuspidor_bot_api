@@ -10,15 +10,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CanalTelegramModel {
     public CanalTelegramModel() {
     }
 
-    public CanalTelegramModel(TelegramChannelPayload payload) {
+    public CanalTelegramModel(TelegramChannelPayload payload, UsuarioModel criador) {
         this.nome = payload.name();
         this.username = payload.username();
+        this.criador = criador;
     }
 
     public void updateData(TelegramChannelPayload payload) {
@@ -38,4 +41,9 @@ public class CanalTelegramModel {
     @CreationTimestamp
     @Column(name = "dt_criacao", updatable = false)
     public LocalDateTime dtCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_criador", referencedColumnName = "id", nullable = false)
+    UsuarioModel criador;
+
 }

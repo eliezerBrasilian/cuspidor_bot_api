@@ -1,5 +1,7 @@
 package app.controllers;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -78,7 +80,7 @@ public class Controller {
         }
 
         public record TelegramChannelPayload(
-                        @JsonProperty("user_id") long userId,
+                        @JsonProperty("user_id_telegram") String userIdTelegram,
                         String name,
                         String username) {
         }
@@ -87,8 +89,22 @@ public class Controller {
         public ResponseEntity<String> addTelegramChannel(
                         @RequestBody TelegramChannelPayload payload) {
 
-                canalTelegramRepository.save(new CanalTelegramModel(payload));
+                Optional<UsuarioModel> opUser = userRepository.findByIdTelegram(payload.userIdTelegram);
+                if (opUser.isEmpty())
+                        return ResponseEntity.status(404).body("user doest't exists");
+
+                var user = opUser.get();
+                canalTelegramRepository.save(new CanalTelegramModel(payload, user));
                 return ResponseEntity.status(201).body("channel added");
+        }
+
+        @GetMapping("user/telegram-channels/{user_id_telegram}")
+        public ResponseEntity<Map<String, List<CanalTelegramModel>>> getTelegramChannels(
+                        @PathVariable("user_id_telegram") String userIdTelegram) {
+
+                var list = canalTelegramRepository.findByUserIdTelegram(userIdTelegram);
+                return ResponseEntity.status(200).body(
+                                Map.of("list", list));
         }
 
         @PutMapping("telegram-channel/{channelId}")

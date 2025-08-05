@@ -34,10 +34,6 @@ public class UsuarioModel {
     @Column(name = "id_telegram", unique = true)
     public String idTelegram;
 
-    @ManyToOne
-    @JoinColumn(name = "id_canal", referencedColumnName = "id")
-    public CanalTelegramModel canal;
-
     // caminho de volta ->
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true) // orphanRemoval se apagar usuario
                                                                                      // a pref tbm é excluida
